@@ -7,9 +7,11 @@
 #[└─>](bold green) '''
 
 format = '''
-$username@$hostname:$directory
-$git_branch$git_commit$git_state$git_status$git_metrics$package$cmd_duration
-$all'''
+$username@$hostname:$directory $git_branch$git_commit$git_state$git_status$git_metrics$package
+$character
+'''
+
+right_format = '$jobs$cmd_duration'
 
 # Inserts a blank line between shell prompts
 add_newline = false
@@ -56,9 +58,8 @@ disabled = false
 [package]
 format = '[$symbol$version]($style) '
 disabled = false
-[memory_usage]
-threshold = 0
-disabled = false
 [cmd_duration]
 format = '[$duration](bold yellow)'
 disabled = false
+[fill]
+symbol = ' '
