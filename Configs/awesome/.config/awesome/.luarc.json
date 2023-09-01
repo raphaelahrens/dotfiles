@@ -1,0 +1,8 @@
+{
+  "diagnostics.globals": [
+      "awesome",
+      "root",
+      "screen",
+      "client"
+  ]
+}
