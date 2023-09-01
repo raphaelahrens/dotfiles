@@ -1,0 +1,64 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+#format = '''
+#$username@$hostname
+#[│](bold green)$directory$rust$package
+#[└─>](bold green) '''
+
+format = '''
+$username@$hostname:$directory
+$git_branch$git_commit$git_state$git_status$git_metrics$package$cmd_duration
+$all'''
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+
+[username]
+style_user = 'green'
+style_root = 'red'
+format = '[$user]($style)'
+disabled = false
+show_always = true
+[hostname]
+ssh_only = false
+style = 'yellow'
+ssh_symbol = '🌐'
+format = '[$hostname]($style)$ssh_symbol'
+disabled = false
+[directory]
+truncation_length = 10
+truncate_to_repo = false
+format = '[$path]($style)[$read_only]($read_only_style)'
+style = 'green'
+disabled = false
+[git_branch]
+format = '[$symbol$branch(:$remote_branch)]($style) '
+symbol = ''
+style = 'yellow'
+disabled = false
+[git_commit]
+format = '[\($hash$tag\)]($style) '
+style = 'yellow'
+tag_disabled = false
+tag_symbol = ' '
+disabled = false
+[git_metrics]
+disabled = false
+[git_status]
+style = 'red'
+deleted = 'x'
+disabled = false
+[package]
+format = '[$symbol$version]($style) '
+disabled = false
+[memory_usage]
+threshold = 0
+disabled = false
+[cmd_duration]
+format = '[$duration](bold yellow)'
+disabled = false
