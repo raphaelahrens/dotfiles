@@ -1,2 +1,2 @@
-eval "$($HOME/.cargo/bin/sheldon source)"
+eval "$(sheldon source)"
 eval "$(starship init zsh)"
