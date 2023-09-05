@@ -4,8 +4,9 @@ local awful = require("awful")
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
-local volumebar = require("volumebar-widget/volumebar")
-local cpu_temp = require("temp-widget/temp")
+local cpu_temp = require("widget/temp")
+local freq = require("widget/freq")
+local battery = require("widget/battery")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
@@ -198,7 +199,34 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
-local tag_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+local widget_seperator = wibox.widget {
+    widget = wibox.widget.separator,
+    forced_width = 5,
+    orientation = "vertical"
+}
+local function seperate_widget(widgets)
+    local sep_widgets = {
+    }
+    if #widgets <= 1 then
+        return widgets
+    end
+    local last_elem = table.remove(widgets)
+    for w in gears.table.iterate(widgets, function(e) return e.visible end) do
+        table.insert(sep_widgets, w)
+        table.insert(sep_widgets, widget_seperator)
+    end
+    table.insert(sep_widgets, last_elem)
+    return sep_widgets
+end
+local right_widgets = seperate_widget{
+            wibox.widget.systray(),
+            battery.widget,
+            freq.widget,
+            cpu_temp.widget,
+            mytextclock,
+}
+
+local tag_names = { "1", "2", "3", "4" };
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -235,16 +263,23 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            wibox.widget.systray(),
-            volumebar,
-            cpu_temp,
-            mytextclock,
-            s.mylayoutbox,
-        },
+        gears.table.join({ layout = wibox.layout.fixed.horizontal}, -- Right widgets 
+        right_widgets,
+        {s.mylayoutbox})
     }
 end)
+
+
+gears.timer {
+    timeout = 5,
+    call_now = true,
+    autostart = true,
+    callback = function()
+        battery.update_fn()
+        freq.update_fn()
+        cpu_temp.update_fn()
+    end
+}
 -- }}}
 
 -- {{{ Mouse bindings
