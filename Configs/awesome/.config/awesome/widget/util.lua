@@ -9,17 +9,14 @@ return {
             state = state and result
         end
         if state then
-            widget.visibe = true
-            return fun
+            return {
+                widget=widget,
+                update_fn=fun
+                }
         end
-        widget.visibe = false
-        return noop
+        return {
+            widget=nil,
+            update_fn=noop
+            }
     end,
-    sysctl_get = function(key, default)
-        local result, value = pcall(sysctl.get, key)
-        if result then
-            return value
-        end
-        return default
-    end
 }

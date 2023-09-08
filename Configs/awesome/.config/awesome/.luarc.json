@@ -4,5 +4,6 @@
       "root",
       "screen",
       "client"
-  ]
+  ],
+  "runtime.version": "Lua 5.3"
 }

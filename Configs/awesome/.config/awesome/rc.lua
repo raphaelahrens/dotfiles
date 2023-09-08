@@ -205,13 +205,12 @@ local widget_seperator = wibox.widget {
     orientation = "vertical"
 }
 local function seperate_widget(widgets)
-    local sep_widgets = {
-    }
+    local sep_widgets = {}
     if #widgets <= 1 then
         return widgets
     end
-    local last_elem = table.remove(widgets)
-    for w in gears.table.iterate(widgets, function(e) return e.visible end) do
+    local last_elem = table.remove(widgets, #widgets)
+    for _,w in pairs(widgets) do
         table.insert(sep_widgets, w)
         table.insert(sep_widgets, widget_seperator)
     end

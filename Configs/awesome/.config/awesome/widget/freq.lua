@@ -7,7 +7,6 @@ local widget = wibox.widget{
     font = "Play 7",
     widget = wibox.widget.textbox,
 }
-widget:set_text("  XXXXX°C XXXXX°C")
 
 
 local update_fn =  function ()
@@ -15,13 +14,9 @@ local update_fn =  function ()
     widget:set_text(string.format("CPU %s", cpu_freq))
 end
 
-return {
-    widget=widget,
-    update_fn=util.test_sysctl(
-        widget,
-        {
-            "dev.cpu.0.freq",
-        },
-        update_fn
-    ),
-}
+return util.test_sysctl(widget,
+    {
+        "dev.cpu.0.freq",
+    },
+    update_fn
+)
