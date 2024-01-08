@@ -119,6 +119,7 @@ local exitmenu = {
 local mainmenu = awful.menu({ items = {
                                     { "open terminal", terminal },
                                     { "Browser", "firefox" },
+                                    { "Mail", "firefox -p Mail" },
                                     { "Editor", "gvim" },
                                     { "Keepass", "keepassxc" },
                                     { "Liferea", "/usr/local/bin/quiterss" },

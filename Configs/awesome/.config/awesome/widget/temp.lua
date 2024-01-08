@@ -60,16 +60,6 @@ local function dbg(title, value)
 
 end
 
-local function slice(ring, n)
-    local stop = rotate(ring.next -1, ring.mask)
-    local start =  rotate(stop-n, ring.mask)
-    local values = ring.values
-    if start <= stop then
-        return slice_iterator(values, start, stop)
-    end
-    return chain(slice_iterator(values, start, #values), slice_iterator(values, 1, stop))
-
-end
 
 local history ={
     values={},
@@ -78,12 +68,22 @@ local history ={
     mask = 1023,
     total_max = 0,
     total_min = 1000,
+    slice = function (self, n)
+        local stop = rotate(self.next -1, self.mask)
+        local start =  rotate(stop-n, self.mask)
+        local values = self.values
+        if start <= stop then
+            return slice_iterator(values, start, stop)
+        end
+        return chain(slice_iterator(values, start, #values), slice_iterator(values, 1, stop))
+
+    end,
     average = function(self, n)
         if n==nil or #self.values < n then
             n = #self.values
         end
         local sum = 0
-        for value in slice(self, n) do
+        for value in self.slice(self, n) do
             sum = sum + value
         end
         return sum/(n +1)
@@ -95,6 +95,10 @@ local history ={
 }
 
 local function update_popup()
+    local cur = history:slice(3)
+    local cur3 = cur() or 0.0
+    local cur2 = cur() or 0.0
+    local cur1 = cur() or 0.0
     local avg_10 = history:average(10)
     local avg_100 = history:average(100)
     local avg = history:average(1000)
@@ -102,12 +106,13 @@ local function update_popup()
     local min_value = math.min(table.unpack(history.values))
     history.last_avg = avg
     local lines = [==[
+Cur: % 3.1f°C % 3.1f°C % 3.1f°C
 Avg: % 3.1f°C % 3.1f°C % 3.1f°C
 Max: % 3.1f°C % 3.1f°C
 Min: % 3.1f°C % 3.1f°C
 %d / %d
     ]==]
-    text_widget:set_text(string.format(lines, avg_10, avg_100, avg,max_value, history.total_max, min_value, history.total_min, history.next, #history.values))
+    text_widget:set_text(string.format(lines, cur1, cur2, cur3,  avg_10, avg_100, avg, max_value, history.total_max, min_value, history.total_min, history.next, #history.values))
 end
 
 local update_fn =  function ()
