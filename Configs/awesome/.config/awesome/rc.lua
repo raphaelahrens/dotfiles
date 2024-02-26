@@ -593,14 +593,16 @@ awful.rules.rules = {
         class = {
           "Arandr",
           "Gpick",
+          "keepassxc",
+          "KeePassXC",
           "Kruler",
           "MessageWin", -- kalarm.
           "Sxiv",
           "Wpa_gui",
+          "explorer.exe",
           "pinentry",
           "veromix",
           "xtightvncviewer",
-          "explorer.exe"
       },
 
         name = {
