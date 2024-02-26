@@ -409,7 +409,26 @@ local globalkeys = gears.table.join(
     awful.key({ modkey, }, "v",
               rc_lib.run_raise_as_master('/home/tant/bin/gvim', {class = 'gvim'}),
               {description = "start or raise gvim", group = "awesome"}
-             )
+             ),
+    awful.key({ modkey, }, "b",
+              rc_lib.run_raise_as_master('/usr/local/bin/firefox', {class = 'firefox'}),
+              {description = "start or raise firefox", group = "awesome"}
+             ),
+    awful.key({ }, "XF86AudioRaiseVolume", function ()
+               awful.util.spawn("/usr/sbin/mixer vol.volume=+1%", false)
+            end
+    ),
+    awful.key({ }, "XF86AudioLowerVolume", function ()
+               awful.util.spawn("/usr/sbin/mixer vol.volume=-1%", false)
+            end
+    ),
+    awful.key({ }, "XF86AudioMute", function ()
+               awful.util.spawn("/usr/sbin/mixer vol.mute=^", false)
+            end
+    ),
+    awful.key({ }, "XF86AudioPlay", function ()
+            end
+    )
 )
 
 local clientkeys = gears.table.join(
@@ -449,7 +468,7 @@ local clientkeys = gears.table.join(
                   description = "toggle keep on top",
                   group = "client"
               }),
-    awful.key({modkey,}, "b",
+    awful.key({modkey,}, "q",
               function (c)
                   naughty.notify({
                                    title = "Properties",
