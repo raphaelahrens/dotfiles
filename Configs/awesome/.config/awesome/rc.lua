@@ -53,7 +53,7 @@ local terminal = "terminal"
 local editor = os.getenv("EDITOR") or "vi"
 local editor_cmd = terminal .. " -e " .. editor
 
-local tty = '/home/tant/bin/terminal-desktop -c terminal-desktop tmux new-session -A -s alpha'
+local tty = '/home/tant/bin/terminal-desktop --class terminal-desktop --command tmux new-session -A -s alpha'
 local tty_class = "terminal-desktop"
 
 -- Default modkey.
@@ -585,34 +585,43 @@ awful.rules.rules = {
     },
 
     -- Floating clients.
-    { rule_any = {
-        instance = {
-          "DTA", -- Firefox addon DownThemAll.
-          "copyq", -- Includes session name in class.
+    {
+        rule_any = {
+            instance = {
+                "DTA", -- Firefox addon DownThemAll.
+                "copyq", -- Includes session name in class.
+            },
+            class = {
+                "Arandr",
+                "Gpick",
+                "Kruler",
+                "MessageWin", -- kalarm.
+                "Sxiv",
+                "Wpa_gui",
+                "explorer.exe",
+                "pinentry",
+                "veromix",
+                "xtightvncviewer",
+            },
+            name = {
+                "Event Tester", -- xev.
+            },
+            role = {
+                "AlarmWindow", -- Thunderbird's calendar.
+                "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
+            }
         },
-        class = {
-          "Arandr",
-          "Gpick",
-          "keepassxc",
-          "KeePassXC",
-          "Kruler",
-          "MessageWin", -- kalarm.
-          "Sxiv",
-          "Wpa_gui",
-          "explorer.exe",
-          "pinentry",
-          "veromix",
-          "xtightvncviewer",
-      },
-
-        name = {
-          "Event Tester", -- xev.
+        properties = { floating = true }
+    },
+    {
+        rule_any = {
+            class = {
+                "keepassxc",
+                "KeePassXC",
+            }
         },
-        role = {
-          "AlarmWindow", -- Thunderbird's calendar.
-          "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
-        }
-      }, properties = { floating = true }},
+        properties = { floating = true, ontop=true }
+    },
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
@@ -622,7 +631,8 @@ awful.rules.rules = {
     { rule = { class = tty_class },
       properties = {
                     skip_taskbar = true,
-                    tags = tag_names
+                    tags = tag_names,
+                    titlebars_enabled = false
                    }
     },
 
