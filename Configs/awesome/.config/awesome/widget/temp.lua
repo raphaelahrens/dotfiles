@@ -3,12 +3,14 @@ local wibox = require("wibox")
 local util = require("widget/util")
 local sysctl = require("sysctl")
 local math = require("math")
+local font = require("widget/font")
 
 local widget = wibox.widget{
-    font = "Play 7",
+    font = font.widget_default,
     widget = wibox.widget.textbox,
 }
 local text_widget = wibox.widget{
+    font = font.widget_default,
     widget = wibox.widget.textbox,
 }
 
@@ -51,15 +53,6 @@ local function slice_iterator(ring, start, stop)
       end
    end
 end
-
-local function dbg(title, value)
-      require("naughty").notify({
-       title = title,
-       text = "value: " .. value
-     })
-
-end
-
 
 local history ={
     values={},

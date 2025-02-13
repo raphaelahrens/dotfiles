@@ -12,7 +12,7 @@ theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
 -- }}}
 
 -- {{{ Styles
-theme.font      = "sans 6"
+theme.font      = "Hack Nerd Font 7"
 
 -- {{{ Colors
 theme.fg_normal  = "#DCDCCC"
@@ -36,7 +36,10 @@ theme.border_marked = "#CC9393"
 theme.titlebar_bg_focus  = "#3F3F3F"
 theme.titlebar_bg_normal = "#3F3F3F"
 -- }}}
-
+-- {{{ Notifications
+theme.notification_fg  = "#DCDCCC"
+theme.notification_bg  = "#1E2320"
+-- }}}
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:

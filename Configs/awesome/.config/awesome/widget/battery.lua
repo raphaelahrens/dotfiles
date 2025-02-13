@@ -1,9 +1,10 @@
 local wibox = require("wibox")
 local sysctl = require("sysctl")
 local util = require("widget/util")
+local font = require("widget/font")
 
 local widget = wibox.widget{
-    font = "Play 7",
+    font = font.widget_default,
     widget = wibox.widget.textbox,
 }
 

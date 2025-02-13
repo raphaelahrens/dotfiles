@@ -2,13 +2,15 @@
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
+local beautiful = require("beautiful")
+beautiful.init(awful.util.getdir("config") .. "themes/zentant/theme.lua")
 -- Widget and layout library
 local wibox = require("wibox")
 local cpu_temp = require("widget/temp")
 local freq = require("widget/freq")
 local battery = require("widget/battery")
+local notify = require("widget/notify")
 -- Theme handling library
-local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
@@ -44,9 +46,11 @@ do
 end
 -- }}}
 
+
+naughty.config.notify_callback = notify.update
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.getdir("config") .. "themes/zentant/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "terminal"
@@ -223,6 +227,7 @@ local right_widgets = seperate_widget{
             battery.widget,
             freq.widget,
             cpu_temp.widget,
+            notify.widget,
             mytextclock,
 }
 
