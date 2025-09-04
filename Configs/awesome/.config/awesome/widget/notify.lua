@@ -223,7 +223,7 @@ local function hide()
 end
 
 local function set_empty()
-    awful.spawn({warn_cmd, "logo", "static", warn_color.none})
+    awful.spawn({warn_cmd, "logo", "off"})
 end
 
 local function remove_top()
@@ -234,7 +234,6 @@ local function remove_top()
     if #state.values == 0 then
         set_empty()
     end
-    return args
 end
 
 local function clear()
