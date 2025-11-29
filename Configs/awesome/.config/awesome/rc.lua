@@ -53,12 +53,13 @@ naughty.config.notify_callback = notify.update
 -- Themes define colours, icons, font and wallpapers.
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "terminal"
 local editor = os.getenv("EDITOR") or "vi"
+local home = os.getenv("HOME") or "/home/tant"
+local terminal = home .. "/bin/terminal"
 local editor_cmd = terminal .. " -e " .. editor
 
-local tty = '/home/tant/bin/terminal-desktop --class terminal-desktop --command tmux new-session -A -s alpha'
 local tty_class = "terminal-desktop"
+local tty = home .. '/bin/terminal-desktop --class '.. tty_class .. ' --command tmux new-session -A -s alpha'
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -311,7 +312,7 @@ local globalkeys = gears.table.join(
       }),
     awful.key({ modkey,}, "Right",
         awful.tag.viewnext,
-      {
+          {
           description = "view next",
           group = "tag"
       }),
@@ -334,8 +335,10 @@ local globalkeys = gears.table.join(
         {description = "focus previous by index", group = "client"}
     ),
     awful.key({ modkey,}, "a",
-            function () mainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+        function () mainmenu:show() end,
+        {description = "show main menu", group = "awesome"}),
+    awful.key({ modkey,}, "n", notify.toggle,
+        {description = "Toggle notify widget", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"}, "j", function () awful.client.swap.byidx(1)end,
@@ -378,7 +381,7 @@ local globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end,
               {description = "select previous", group = "layout"}),
 
-    awful.key({ modkey, "Control" }, "n",
+    awful.key({ modkey, "Control" }, "m",
               function ()
                   local c = awful.client.restore()
                   -- Focus restored client
@@ -484,34 +487,19 @@ local clientkeys = gears.table.join(
                   description = "Help",
                   group = "client"
               }),
-    awful.key({ modkey,}, "n",
+    awful.key({ modkey,}, "m",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey,}, "m",
+    awful.key({ modkey, "Shift"}, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
         end ,
-        {description = "(un)maximize", group = "client"}),
-    awful.key({ modkey, "Control"}, "m",
-        function (c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end ,
-        {description = "(un)maximize vertically", group = "client"}),
-    awful.key({ modkey, "Shift"}, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end ,
-        {
-            description = "(un)maximize horizontally",
-            group = "client"
-        })
+        {description = "(un)maximize", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -722,6 +710,7 @@ do
     local cmds ={
         -- "/usr/local/bin/pidgin",
         -- "/usr/local/bin/liferea"
+        "keepassxc"
     }
     for _, cmd in pairs(cmds) do
         awful.spawn(cmd)

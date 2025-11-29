@@ -5,7 +5,10 @@ function lib.run_raise_as_master(cmd, match_rule)
     return function()
         local matcher = function (c)
             if awful.rules.match(c, match_rule) then
-                c:swap(awful.client.getmaster())
+                local old_master = awful.client.getmaster()
+                if old_master ~= nil then
+                    c:swap(old_master)
+                end
                 return true
             end
             return false
