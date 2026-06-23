@@ -17,6 +17,7 @@ local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- libs
 local rc_lib = require("rc_lib")
+local oslib = require("oslib")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -275,15 +276,22 @@ awful.screen.connect_for_each_screen(function(s)
     }
 end)
 
+local widget_updates_fns = {
+        battery.update_fn,
+--        freq.update_fn()
+        cpu_temp.update_fn
+}
 
 gears.timer {
     timeout = 5,
     call_now = true,
     autostart = true,
     callback = function()
-        battery.update_fn()
-        freq.update_fn()
-        cpu_temp.update_fn()
+        for _,f in pairs(widget_updates_fns) do
+            if f ~=nil then
+                f()
+            end
+        end
     end
 }
 -- }}}
@@ -707,12 +715,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Autorun
 do
-    local cmds ={
-        -- "/usr/local/bin/pidgin",
-        -- "/usr/local/bin/liferea"
-        "keepassxc"
-    }
-    for _, cmd in pairs(cmds) do
+    for _, cmd in pairs(oslib.autostart) do
         awful.spawn(cmd)
     end
 end

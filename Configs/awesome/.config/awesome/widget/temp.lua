@@ -1,9 +1,16 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local util = require("widget/util")
-local sysctl = require("sysctl")
 local math = require("math")
 local font = require("widget/font")
+
+local oslib = require("oslib")
+
+if oslib.temp.available == false then
+    return {
+        widget=nil,
+        update_fn=nil,
+    }
+end
 
 local widget = wibox.widget{
     font = font.widget_default,
@@ -109,9 +116,7 @@ Min: % 3.1f°C % 3.1f°C
 end
 
 local update_fn =  function ()
-    local temp_raw = sysctl.get('dev.cpu.0.temperature')
-    -- remove 270 since the tempsensor seems to be of by 27°C
-    local temp = (temp_raw - 2731 - 270) / 10
+    local temp = oslib.temp.cpu()
     history:insert(temp)
     history.total_max = math.max(history.total_max, temp)
     history.total_min = math.min(history.total_min, temp)
@@ -128,7 +133,7 @@ widget:connect_signal("mouse::enter", function (_)
 end)
 widget:connect_signal("mouse::leave", function (_) popup.visible = false end)
 
-return util.test_sysctl(widget,
-    {"dev.cpu.0.temperature",},
-    update_fn
-)
+return {
+    widget=widget,
+    update_fn=update_fn,
+}
